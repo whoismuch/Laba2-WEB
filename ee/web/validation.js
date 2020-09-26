@@ -137,7 +137,7 @@ function checkFields(event) {
     if (!id) {
         RisNotChosen();
     }
-    
+
     if (flagX == true && flagY == true && flagR == true) {
         form.submit();
     }

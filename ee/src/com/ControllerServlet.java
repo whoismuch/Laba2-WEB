@@ -15,8 +15,6 @@ public class ControllerServlet extends HttpServlet {
     @Override
     protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        System.out.println(1);
-
         String[] paramsR = request.getParameterValues("chooseR");
         String paramX = request.getParameter("selectX");
         String paramY = request.getParameter("enterY");
@@ -27,13 +25,9 @@ public class ControllerServlet extends HttpServlet {
                 emptyparams.add("R");
                 request.setAttribute("emptyparams", emptyparams);
                 this.getServletContext( ).getRequestDispatcher("/index.jsp").forward(request, response);
+            } else {
             }
-            else {
-
-            }
-        }
-
-        else {
+        } else {
             if (paramsR == null || paramX == null || paramY == null) {
                 if (paramsR == null) {
                     emptyparams.add("R");
