@@ -1,0 +1,171 @@
+body {
+	background-image: url(../itmo.jpg);
+	font-size: 20px;
+	font-family: Helvetica;
+}
+
+ p {
+	line-height: 30%;
+  }
+
+ .header {
+ 	color: white;
+ }
+
+ .centerBorder {
+ 	background: white; /* Цвет фона */
+    color: black; /* Цвет текста */
+    padding-left: 70px; /* Поля вокруг текста */
+    padding-right: 70px;
+    padding-top: 50px;
+    padding-bottom: 70px;
+    border-radius: 20px; /* Уголки */
+    margin: auto;
+    margin-top: 75px;
+    width: 700px;
+    height: 310px;
+    opacity: 0.77;
+    display: flex;
+    overflow: scroll;
+ }
+
+ .commonGroup > .XR > * {
+ 	background: #63bee5;
+ 	color: black;
+ 	border-radius: 15px;
+ 	opacity: 1;
+ }
+
+.commonGroup > .fillItPls, .enterY {
+ 	background: #63bee5;
+ 	color: black;
+ 	border-radius: 15px;
+ 	opacity: 1;
+ }
+
+.commonGroup > .XR > .chooseR {
+	padding: 10px;
+ 	padding-top: 20px;
+	padding-bottom: 20px;
+ 	width: 115px;
+ 	font-size: 17px;
+ 	text-align: center;
+ }
+
+.commonGroup > .XR > .selectX {
+ 	margin-left: 30px;
+ 	width: 110px;
+ 	height: 26px;
+ 	padding-top: 10px;
+ 	padding-left: 18px;
+ 	padding-bottom: 5px;
+ 	padding-right: 13px;
+ }
+
+
+
+.commonGroup > .enterY {
+ 	padding: 20px;
+ 	margin-top: 15px;
+ 	margin-bottom: 20px;
+ 	width: 295px;
+ 	height: 27px;
+ }
+
+input[type=text] {
+	line-height: 25px;
+	width: 285px;
+	font-size: 15px;
+	text-align: center;
+}
+
+input::placeholder {
+	text-align: center;
+	font-size: 15px;
+	color: black;
+}
+
+.commonGroup > .button {
+	background: #63bee5;
+ 	color: black;
+ 	border-radius: 15px;
+ 	opacity: 1;
+ 	padding-top: 7px;
+ 	padding-left: 18px;
+ 	padding-bottom: 5px;
+ 	padding-right: 18px;
+ 	width: 130px;
+ 	height: 30px;
+ 	align-self: center;
+ 	margin: auto;
+}
+
+
+.button input {
+	width: 130px;
+	height: 24px;
+}
+
+
+.commonGroup {
+	margin-right: 55px;
+}
+
+.XR {
+	display: flex;
+}
+
+.fillItPls {
+	margin-bottom: 23px;
+	padding: 5px;
+	text-align: center;
+}
+
+.svg {
+	margin-bottom: 20px;
+}
+
+.axis-text {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+select {
+	text-align-last: center;
+}
+
+.error {
+	border-color: red;
+}
+
+.php {
+	color: black;
+}
+
+table {
+	background: #63bee5;
+ 	color: black;
+	width: 100%; /* Ширина таблицы */
+    border-spacing: 1px; /* Расстояние между ячейками */
+    text-align: center;
+    overflow: scroll;
+}
+
+td, th, tr {
+	width: 20%;
+	text-align: center;
+}
+
+/*.rectangle-figure:hover, .triangle-figure:hover, .circle-figure:hover {*/
+/*	fill: red;*/
+/*}*/
+
+.frame {
+	opacity: 0;
+}
+
+p#negodiay {
+	color: red;
+	align-content: center;
+}
+
