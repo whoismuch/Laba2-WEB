@@ -1,4 +1,7 @@
-<%@ page import="com.AreaCheckServlet" %><%--
+<%@ page import="com.AreaCheckServlet" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %><%--
   Created by IntelliJ IDEA.
   User: khumachbayramova
   Date: 27.09.2020
@@ -31,62 +34,32 @@
             <th>Результат</th>
         </tr>
         <%
-            AreaCheckServlet asc = (AreaCheckServlet) request.getAttribute("AreaCheckServlet");
-            if (asc.getNewParamX( ) != null && asc.getNewParamY( ) != null || asc.getShit( )) {
-                for (int i = 0; i < asc.getParamsR( ).size( ); i++) {
+            ArrayList<HashMap<String, Object>> datas;
+            if (request.getServletContext( ).getAttribute("history") != null) {
+                datas = (ArrayList<HashMap<String, Object>>) request.getServletContext( ).getAttribute("history");
+                for (HashMap<String, Object> map : datas) {
         %>
         <tr>
             <%
-                if (asc.getShit( ) || asc.getResults( )[i].equals("Данные неверны")) {
+                if (map.get("Result").equals("Данные неверны")) {
             %>
             <td colspan="4" style="color: red;">Данные неверны</td>
             <%
             } else {
             %>
-            <td><% out.print(asc.getNewParamX( ));%></td>
-            <td><% out.print(asc.getNewParamY( ));%></td>
-            <td><% out.print(asc.getParamsR( ).get(i));%></td>
-            <td><% out.print(asc.getResults( )[i]);%></td>
+            <td><% out.print(String.format("%.2f", Float.parseFloat(map.get("X").toString( ))));%></td>
+            <td><% out.print(String.format("%.2f", Float.parseFloat(map.get("Y").toString( ))));%></td>
+            <td><% out.print(map.get("R"));%></td>
+            <td><% out.print(map.get("Result"));%></td>
             <%
                 }
             %>
         </tr>
         <%
-            }
-        } else {
-            for (int i = 0; i < asc.getParamsR( ).size( ); i++) {
-        %>
-        <tr>
-            <%
-                if (asc.getShit( ) || asc.getResults( )[i].equals("Данные неверны")) {
-            %>
-            <td colspan="4" style="color: red;">Данные неверны</td>
-            <%
-            } else {
-            %>
-            <td><% out.print(asc.getParamsX( )[i]);%></td>
-            <td><% out.print(asc.getParamsY( )[i]);%></td>
-            <td><% out.print(asc.getParamsR( ).get(i));%></td>
-            <td><% out.print(asc.getResults( )[i]);%></td>
-            <%
-                        }
-                    }
                 }
-            %>
-        </tr>
-        <%--        <?php foreach ($_SESSION['allResults'] as $value) { ?>--%>
-        <%--        <tr>--%>
+            }
+        %>
 
-        <%--            <td><?php echo $value[0] ?></td>--%>
-        <%--            <td><?php echo $value[1] ?></td>--%>
-        <%--            <td><?php echo $value[2] ?></td>--%>
-        <%--            <td><?php echo $value[3] ?></td>--%>
-        <%--            <td><?php echo $value[4] ?></td>--%>
-        <%--            <td><?php echo $value[5] ?></td>--%>
-
-        <%--        </tr>--%>
-
-        <%--        <?php } ?>--%>
     </table>
 </div>
 

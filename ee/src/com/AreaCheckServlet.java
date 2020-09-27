@@ -4,10 +4,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -90,8 +90,8 @@ public class AreaCheckServlet {
     public void checkCoordFromGraphic (ArrayList<String> paramsR, String paramY) throws ServletException, IOException {
 
         results = new String[paramsR.size( )];
-        paramsX = new Double[paramsR.size()];
-        paramsY = new Double[paramsR.size()];
+        paramsX = new Double[paramsR.size( )];
+        paramsY = new Double[paramsR.size( )];
 
         for (int i = 0; i < paramsR.size( ); i++) {
             results[i] = " ";
@@ -121,18 +121,34 @@ public class AreaCheckServlet {
 
         if (!shit) {
             int countForNewR = 0;
-            for (int i = 0; i< paramsR.size(); i++) {
+            for (int i = 0; i < paramsR.size( ); i++) {
                 if (!results[i].equals("Данные неверны")) {
                     paramsX[i] = (currentX / 100d * newParamsR.get(countForNewR));
                     paramsY[i] = (currentY / 100d * newParamsR.get(countForNewR));
                     results[i] = (checkArea(paramsX[i], paramsY[i], newParamsR.get(countForNewR)));
                     countForNewR++;
                 }
+                HashMap<String, Object> datas = new HashMap<>( );
 
+                datas.put("X", paramsX[i]);
+                datas.put("Y", paramsY[i]);
+                datas.put("R", newParamsR.get(countForNewR - 1));
+                datas.put("Result", results[i]);
+
+
+                if (servletContext.getAttribute("history") == null) {
+                    ArrayList<HashMap<String, Object>> list = new ArrayList<>( );
+                    list.add(datas);
+                    servletContext.setAttribute("history", list);
+                }
+                else {
+                    ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>) servletContext.getAttribute("history");
+                    list.add(datas);
+                    servletContext.setAttribute("history", list);
+                }
             }
 
         }
-
 
 
 
@@ -175,12 +191,31 @@ public class AreaCheckServlet {
             shit = true;
         }
 
+
         if (!shit) {
             int countForNewR = 0;
-            for (int i = 0; i< paramsR.size(); i++) {
+            for (int i = 0; i < paramsR.size( ); i++) {
                 if (!results[i].equals("Данные неверны")) {
                     results[i] = (checkArea(Double.parseDouble(newParamX.toString( )), newParamY, newParamsR.get(countForNewR)));
                     countForNewR++;
+                }
+
+                HashMap<String, Object> datas = new HashMap<>( );
+
+                datas.put("X", newParamX);
+                datas.put("Y", newParamY);
+                datas.put("R", newParamsR.get(countForNewR - 1));
+                datas.put("Result", results[i]);
+
+                if (servletContext.getAttribute("history") == null) {
+                    ArrayList<HashMap<String, Object>> list = new ArrayList<>( );
+                    list.add(datas);
+                    servletContext.setAttribute("history", list);
+                }
+                else {
+                    ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>) servletContext.getAttribute("history");
+                    list.add(datas);
+                    servletContext.setAttribute("history", list);
                 }
             }
         }

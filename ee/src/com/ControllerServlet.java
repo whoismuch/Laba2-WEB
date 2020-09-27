@@ -1,5 +1,7 @@
 package com;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,9 @@ import java.util.stream.Stream;
 
 
 public class ControllerServlet extends HttpServlet {
+
+    ServletContext sc;
+
     @Override
     protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -21,7 +26,7 @@ public class ControllerServlet extends HttpServlet {
         String paramX = request.getParameter("selectX");
         String paramY = request.getParameter("enterY");
         ArrayList<String> emptyparams = new ArrayList<>( );
-        AreaCheckServlet areaCheckServlet = new AreaCheckServlet(request, response, getServletContext());
+        AreaCheckServlet areaCheckServlet = new AreaCheckServlet(request, response, sc);
 
         if (paramY != null && paramY.contains("graphic")) {
             if (paramsR == null) {
@@ -45,13 +50,15 @@ public class ControllerServlet extends HttpServlet {
 
                 request.setAttribute("emptyparams", emptyparams);
                 this.getServletContext( ).getRequestDispatcher("/index.jsp").forward(request, response);
-            }
-
-            else {
+            } else {
                 areaCheckServlet.checkCoordFromForm(Stream.of(paramsR).collect(Collectors.toCollection(ArrayList::new)), paramX, paramY);
             }
         }
-
-
     }
+
+
+    public void init (ServletConfig config) throws ServletException {
+         sc = config.getServletContext( );
+    }
+
 }
