@@ -41,6 +41,7 @@ frame[0].addEventListener("click", function (event) {
 
     form.submit();
 
+    selectX.style = styleX;
     enterY.value = "";
 });
 

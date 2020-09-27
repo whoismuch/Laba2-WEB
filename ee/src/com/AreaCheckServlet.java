@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,8 +22,8 @@ public class AreaCheckServlet {
     //Номера будующих строк с невалидными данными
     private ArrayList<Integer> stringsWithShit;
     private ArrayList<Long> newParamsR;
-    private ArrayList<Double> paramsX;
-    private ArrayList<Double> paramsY;
+    private Double[] paramsX;
+    private Double[] paramsY;
     private String[] results;
     private Long newParamX;
     private Double newParamY;
@@ -53,11 +54,11 @@ public class AreaCheckServlet {
         return newParamsR;
     }
 
-    public ArrayList<Double> getParamsX ( ) {
+    public Double[] getParamsX ( ) {
         return paramsX;
     }
 
-    public ArrayList<Double> getParamsY ( ) {
+    public Double[] getParamsY ( ) {
         return paramsY;
     }
 
@@ -81,57 +82,62 @@ public class AreaCheckServlet {
         shit = false;
         stringsWithShit = new ArrayList<>( );
         newParamsR = new ArrayList<>( );
-        paramsX = new ArrayList<>( );
-        paramsY = new ArrayList<>( );
-        paramsR = new ArrayList<>();
+        paramsR = new ArrayList<>( );
         this.request.setAttribute("AreaCheckServlet", this);
 
     }
 
     public void checkCoordFromGraphic (ArrayList<String> paramsR, String paramY) throws ServletException, IOException {
 
+        results = new String[paramsR.size( )];
+        paramsX = new Double[paramsR.size()];
+        paramsY = new Double[paramsR.size()];
+
+        for (int i = 0; i < paramsR.size( ); i++) {
+            results[i] = " ";
+            paramsX[i] = 0d;
+            paramsY[i] = 0d;
+
+        }
+
 //
-//        this.paramsR = paramsR;
-//        newParamsR = new ArrayList<>( );
-//        paramsX = new ArrayList<>( );
-//        paramsY = new ArrayList<>( );
-//
-//
-//        Long currentX = 0L;
-//        Long currentY = 0L;
-//
-//
-//        try {
-//            currentX = Long.parseLong(paramY.substring(paramY.indexOf("c") + 1));
-//            currentY = Long.parseLong(paramY.substring(0, paramY.indexOf("g")));
-//        } catch (NumberFormatException ex) {
-//            shit = true;
-//        }
-//
-//        newParamsR = rFromStringsToIntegers(paramsR);
-//        if (newParamsR.isEmpty( )) shit = true;
-//
-//
-//        for (Long r : newParamsR) {
-//            if (!shit) {
-//                paramsX.add(currentX / 100d * r);
-//                paramsY.add(currentY / 100d * r);
-//
-//                checkArea(paramsX.get(newParamsR.indexOf(r)), paramsY.get(newParamsR.indexOf(r)), r);
-//            } else results.add("Данные неверны");
-//
-//        }
-//
-//
-//        if (!shit) {
-//            request.setAttribute("X", currentX);
-//            request.setAttribute("Y", currentY);
-//            servletContext.getRequestDispatcher("/index.jsp").forward(request, response);
-//        }
-//
-//        else {
-//            servletContext.getRequestDispatcher("/result.jsp").forward(request, response);
-//        }
+        this.paramsR = paramsR;
+
+
+        Long currentX = 0L;
+        Long currentY = 0L;
+
+
+        try {
+            currentX = Long.parseLong(paramY.substring(paramY.indexOf("c") + 1));
+            currentY = Long.parseLong(paramY.substring(0, paramY.indexOf("g")));
+        } catch (NumberFormatException ex) {
+            shit = true;
+        }
+
+        newParamsR = rFromStringsToIntegers(paramsR);
+        if (newParamsR.isEmpty( )) shit = true;
+
+
+        if (!shit) {
+            int countForNewR = 0;
+            for (int i = 0; i< paramsR.size(); i++) {
+                if (!results[i].equals("Данные неверны")) {
+                    paramsX[i] = (currentX / 100d * newParamsR.get(countForNewR));
+                    paramsY[i] = (currentY / 100d * newParamsR.get(countForNewR));
+                    results[i] = (checkArea(paramsX[i], paramsY[i], newParamsR.get(countForNewR)));
+                    countForNewR++;
+                }
+
+            }
+
+        }
+
+
+
+
+        servletContext.getRequestDispatcher("/result.jsp").forward(request, response);
+
 
     }
 
@@ -142,9 +148,9 @@ public class AreaCheckServlet {
 
     public void checkCoordFromForm (ArrayList<String> paramsR, String paramX, String paramY) throws ServletException, IOException {
 
-        results = new String[paramsR.size()];
+        results = new String[paramsR.size( )];
 
-        for (int i=0; i<paramsR.size(); i++) {
+        for (int i = 0; i < paramsR.size( ); i++) {
             results[i] = " ";
         }
 
@@ -152,8 +158,7 @@ public class AreaCheckServlet {
 
         newParamsR = new ArrayList<>( );
         newParamsR = rFromStringsToIntegers(paramsR);
-
-        System.out.println(paramY);
+        if (newParamsR.isEmpty( )) shit = true;
 
         try {
             newParamX = Long.parseLong(paramX);
@@ -171,17 +176,14 @@ public class AreaCheckServlet {
         }
 
         if (!shit) {
-            int i=0;
             int countForNewR = 0;
-            for (String s : paramsR) {
+            for (int i = 0; i< paramsR.size(); i++) {
                 if (!results[i].equals("Данные неверны")) {
                     results[i] = (checkArea(Double.parseDouble(newParamX.toString( )), newParamY, newParamsR.get(countForNewR)));
                     countForNewR++;
                 }
-                i++;
             }
         }
-
 
 
         servletContext.getRequestDispatcher("/result.jsp").forward(request, response);
@@ -196,12 +198,16 @@ public class AreaCheckServlet {
                 Long newR = (Long.parseLong(r));
                 if (newR != 1 && newR != 2 && newR != 3 && newR != 4 && newR != 5) {
                     results[paramsR.indexOf(r)] = "Данные неверны";
+                    paramsX[paramsR.indexOf(r)] = null;
+                    paramsY[paramsR.indexOf(r)] = null;
                     continue;
                 }
                 newParamsR.add(newR);
 
             } catch (NumberFormatException ex) {
                 results[paramsR.indexOf(r)] = "Данные неверны";
+                paramsX[paramsR.indexOf(r)] = null;
+                paramsY[paramsR.indexOf(r)] = null;
                 continue;
             }
         }
