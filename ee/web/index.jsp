@@ -113,7 +113,15 @@
             <path class="circle-figure" d="M 50 150 A 100 100, 180, 0, 1, 150 50 L 150 150 Z"
                   fill="blue" fill-opacity="0.7" stroke="blue"></path>
 
-            <%--        <circle r="5" cx="0" cy="0" id="target-dot"></circle>--%>
+            <%
+                if (request.getAttribute("X") != null && request.getAttribute("Y") != null) {
+
+            %>
+            <circle r="3" cx="<% out.println(150 + (Long)request.getAttribute("X")); %>" cy="<% out.println(150 - (Long)request.getAttribute("Y")); %>" id="target-dot"></circle>
+            <%
+                }
+            %>
+            <circle r="3" cx="" cy="0" id="target-dot"></circle>
 
             <polygon class="frame" points="0,0 0,300 300,300 300,0"></polygon>
 

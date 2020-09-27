@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class ControllerServlet extends HttpServlet {
@@ -19,6 +21,7 @@ public class ControllerServlet extends HttpServlet {
         String paramX = request.getParameter("selectX");
         String paramY = request.getParameter("enterY");
         ArrayList<String> emptyparams = new ArrayList<>( );
+        AreaCheckServlet areaCheckServlet = new AreaCheckServlet(request, response, getServletContext());
 
         if (paramY != null && paramY.contains("graphic")) {
             if (paramsR == null) {
@@ -26,6 +29,7 @@ public class ControllerServlet extends HttpServlet {
                 request.setAttribute("emptyparams", emptyparams);
                 this.getServletContext( ).getRequestDispatcher("/index.jsp").forward(request, response);
             } else {
+                areaCheckServlet.checkCoordFromGraphic(Stream.of(paramsR).collect(Collectors.toCollection(ArrayList::new)), paramY);
             }
         } else {
             if (paramsR == null || paramX == null || paramY == null) {
@@ -41,6 +45,10 @@ public class ControllerServlet extends HttpServlet {
 
                 request.setAttribute("emptyparams", emptyparams);
                 this.getServletContext( ).getRequestDispatcher("/index.jsp").forward(request, response);
+            }
+
+            else {
+                areaCheckServlet.checkCoordFromForm(Stream.of(paramsR).collect(Collectors.toCollection(ArrayList::new)), paramX, paramY);
             }
         }
 
