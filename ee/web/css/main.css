@@ -171,5 +171,25 @@ p#negodiay {
 }
 
 circle#target-dot {
-	color: deeppink;
+	color: red;
 }
+
+.link {
+	margin-left: 700px ;
+}
+
+.centerBorderT {
+	background: white; /* Цвет фона */
+	color: black; /* Цвет текста */
+	padding-left: 70px; /* Поля вокруг текста */
+	padding-right: 70px;
+	padding-bottom: 70px;
+	border-radius: 20px; /* Уголки */
+	margin: auto;
+	margin-top: 75px;
+	width: 700px;
+	height: 360px;
+	opacity: 0.77;
+	overflow: scroll;
+}
+

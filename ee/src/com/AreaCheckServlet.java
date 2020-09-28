@@ -119,52 +119,68 @@ public class AreaCheckServlet {
         if (newParamsR.isEmpty( )) shit = true;
 
 
-        if (!shit) {
-            int countForNewR = 0;
+        if (shit) {
             for (int i = 0; i < paramsR.size( ); i++) {
-                if (!results[i].equals("Данные неверны")) {
-                    paramsX[i] = (currentX / 100d * newParamsR.get(countForNewR));
-                    paramsY[i] = (currentY / 100d * newParamsR.get(countForNewR));
-                    results[i] = (checkArea(paramsX[i], paramsY[i], newParamsR.get(countForNewR)));
-                    countForNewR++;
-                }
-                HashMap<String, Object> datas = new HashMap<>( );
+                results[i] = "Данные неверны";
+            }
+        }
 
+        int countForNewR = 0;
+        boolean in = false;
+        for (int i = 0; i < paramsR.size( ); i++) {
+            if (!results[i].equals("Данные неверны")) {
+                paramsX[i] = (currentX / 100d * newParamsR.get(countForNewR));
+                paramsY[i] = (currentY / 100d * newParamsR.get(countForNewR));
+                results[i] = (checkArea(paramsX[i], paramsY[i], newParamsR.get(countForNewR)));
+                countForNewR++;
+                in = true;
+            }
+            HashMap<String, Object> datas = new HashMap<>( );
+            ArrayList<Number> points = new ArrayList<>( );
+
+            if (!shit) {
                 datas.put("X", paramsX[i]);
                 datas.put("Y", paramsY[i]);
-                datas.put("R", newParamsR.get(countForNewR - 1));
-                datas.put("Result", results[i]);
+                if (in) datas.put("R", newParamsR.get(countForNewR - 1));
+                else datas.put("R", newParamsR.get(countForNewR));
+            }
+            datas.put("Result", results[i]);
 
 
-                if (servletContext.getAttribute("history") == null) {
-                    ArrayList<HashMap<String, Object>> list = new ArrayList<>( );
-                    list.add(datas);
-                    servletContext.setAttribute("history", list);
-                }
-                else {
-                    ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>) servletContext.getAttribute("history");
-                    list.add(datas);
-                    servletContext.setAttribute("history", list);
-                }
+            ArrayList<HashMap<String, Object>> historyList;
+            ArrayList<ArrayList<Number>> pointsList;
+            if (servletContext.getAttribute("history") == null) {
+                historyList = new ArrayList<>( );
+                pointsList = new ArrayList<>( );
+            } else {
+                historyList = (ArrayList<HashMap<String, Object>>) servletContext.getAttribute("history");
+                pointsList = (ArrayList<ArrayList<Number>>) servletContext.getAttribute("points");
+            }
+            historyList.add(datas);
+            if (!results[i].equals("Данные неверны")) {
+                points.add(paramsX[i]);
+                points.add(paramsY[i]);
+                points.add(newParamsR.get(countForNewR - 1));
+                pointsList.add(points);
             }
 
+            servletContext.setAttribute("history", historyList);
+            servletContext.setAttribute("points", pointsList);
         }
 
 
-
-        servletContext.getRequestDispatcher("/result.jsp").forward(request, response);
+        servletContext.getRequestDispatcher("/index.jsp").forward(request, response);
+//        servletContext.getRequestDispatcher("/result.jsp").forward(request, response);
 
 
     }
 
-
-    public ArrayList<String> getParamsR ( ) {
-        return paramsR;
-    }
 
     public void checkCoordFromForm (ArrayList<String> paramsR, String paramX, String paramY) throws ServletException, IOException {
 
         results = new String[paramsR.size( )];
+        paramsX = new Double[paramsR.size( )];
+        paramsY = new Double[paramsR.size( )];
 
         for (int i = 0; i < paramsR.size( ); i++) {
             results[i] = " ";
@@ -192,36 +208,56 @@ public class AreaCheckServlet {
         }
 
 
-        if (!shit) {
-            int countForNewR = 0;
+        if (shit) {
             for (int i = 0; i < paramsR.size( ); i++) {
-                if (!results[i].equals("Данные неверны")) {
-                    results[i] = (checkArea(Double.parseDouble(newParamX.toString( )), newParamY, newParamsR.get(countForNewR)));
-                    countForNewR++;
-                }
-
-                HashMap<String, Object> datas = new HashMap<>( );
-
-                datas.put("X", newParamX);
-                datas.put("Y", newParamY);
-                datas.put("R", newParamsR.get(countForNewR - 1));
-                datas.put("Result", results[i]);
-
-                if (servletContext.getAttribute("history") == null) {
-                    ArrayList<HashMap<String, Object>> list = new ArrayList<>( );
-                    list.add(datas);
-                    servletContext.setAttribute("history", list);
-                }
-                else {
-                    ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>) servletContext.getAttribute("history");
-                    list.add(datas);
-                    servletContext.setAttribute("history", list);
-                }
+                results[i] = "Данные неверны";
             }
         }
 
+        int countForNewR = 0;
+        boolean in = false;
+        for (int i = 0; i < paramsR.size( ); i++) {
+            if (!results[i].equals("Данные неверны")) {
+                results[i] = (checkArea(Double.parseDouble(newParamX.toString( )), newParamY, newParamsR.get(countForNewR)));
+                countForNewR++;
+                in = true;
+            }
 
-        servletContext.getRequestDispatcher("/result.jsp").forward(request, response);
+            HashMap<String, Object> datas = new HashMap<>( );
+            ArrayList<Number> points = new ArrayList<>( );
+            if (!shit) {
+                datas.put("X", newParamX);
+                datas.put("Y", newParamY);
+                if (in) datas.put("R", newParamsR.get(countForNewR - 1));
+                else datas.put("R", newParamsR.get(countForNewR));
+            }
+            datas.put("Result", results[i]);
+
+
+            ArrayList<HashMap<String, Object>> historyList;
+            ArrayList<ArrayList<Number>> pointsList;
+            if (servletContext.getAttribute("history") == null) {
+                historyList = new ArrayList<>( );
+                pointsList = new ArrayList<>( );
+            } else {
+                historyList = (ArrayList<HashMap<String, Object>>) servletContext.getAttribute("history");
+                pointsList = (ArrayList<ArrayList<Number>>) servletContext.getAttribute("points");
+            }
+            historyList.add(datas);
+            if (!results[i].equals("Данные неверны")) {
+                points.add(newParamX);
+                points.add(newParamY);
+                points.add(newParamsR.get(countForNewR - 1));
+                pointsList.add(points);
+            }
+
+            servletContext.setAttribute("history", historyList);
+            servletContext.setAttribute("points", pointsList);
+        }
+
+
+        servletContext.getRequestDispatcher("/index.jsp").forward(request, response);
+//        servletContext.getRequestDispatcher("/result.jsp").forward(request, response);
 
 
     }

@@ -114,14 +114,23 @@
                   fill="blue" fill-opacity="0.7" stroke="blue"></path>
 
             <%
-                if (request.getAttribute("X") != null && request.getAttribute("Y") != null) {
+                ArrayList<ArrayList<Number>> points;
+                if (request.getServletContext( ).getAttribute("points") != null) {
+                    points = (ArrayList<ArrayList<Number>>) request.getServletContext( ).getAttribute("points");
+                    for (ArrayList<Number> point : points) {
+            %>
+            <circle r="3"
+                    cx="<% out.println(150 + Double.parseDouble(point.get(0).toString())/Double.parseDouble(point.get(2).toString())*100); %>"
+                    cy="<% out.println(150 - Double.parseDouble(point.get(1).toString())/Double.parseDouble(point.get(2).toString())*100); %>"
+                    id="target-dot"></circle>
+            <%
+                    }
+                    request.setAttribute("in", true);
+
+                }
 
             %>
-            <circle r="3" cx="<% out.println(150 + (Long)request.getAttribute("X")); %>" cy="<% out.println(150 - (Long)request.getAttribute("Y")); %>" id="target-dot"></circle>
-            <%
-                }
-            %>
-            <circle r="3" cx="" cy="0" id="target-dot"></circle>
+
 
             <polygon class="frame" points="0,0 0,300 300,300 300,0"></polygon>
 
@@ -129,7 +138,7 @@
 
         <%
             if (request.getAttribute("emptyparams") != null) {
-                String message = "Ну не по-пацански это, выберите ";
+                String message = "Не по-пацански это, выберите ";
                 ArrayList<String> emptyparams = (ArrayList<String>) request.getAttribute("emptyparams");
                 for (String param : emptyparams) {
                     message = message + param + " ";
@@ -138,6 +147,13 @@
         <h5><b><p id="negodiay"><%out.println(message);%></p></b></h5>
 
         <%
+            }
+
+            else {
+                if (request.getAttribute("in") != null && request.getAttribute("in").equals(true) && (request.getParameter("in") == null || !request.getParameter("in").equals("true"))) {
+                    request.getServletContext( ).getRequestDispatcher("/result.jsp").forward(request, response);
+                    request.setAttribute("in", false);
+                }
             }
         %>
 

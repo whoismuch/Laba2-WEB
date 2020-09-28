@@ -24,7 +24,13 @@
     </em>
 </div>
 
-<div class="centerBorder">
+<div class="centerBorderT">
+
+    <div class="link">
+    <a href="/ee_war_exploded/index.jsp?in=true"><img src="/ee_war_exploded/strelka.jpg" width="80"
+                                                      height="50"></a>
+    </div>
+
     <table>
 
         <tr>
@@ -61,7 +67,11 @@
         %>
 
     </table>
+
+
+
 </div>
+
 
 </body>
 </html>

@@ -28,11 +28,12 @@ public class ControllerServlet extends HttpServlet {
         ArrayList<String> emptyparams = new ArrayList<>( );
         AreaCheckServlet areaCheckServlet = new AreaCheckServlet(request, response, sc);
 
+
         if (paramY != null && paramY.contains("graphic")) {
             if (paramsR == null) {
                 emptyparams.add("R");
                 request.setAttribute("emptyparams", emptyparams);
-                this.getServletContext( ).getRequestDispatcher("/index.jsp").forward(request, response);
+                sc.getRequestDispatcher("/index.jsp").forward(request, response);
             } else {
                 areaCheckServlet.checkCoordFromGraphic(Stream.of(paramsR).collect(Collectors.toCollection(ArrayList::new)), paramY);
             }
@@ -49,7 +50,7 @@ public class ControllerServlet extends HttpServlet {
                 }
 
                 request.setAttribute("emptyparams", emptyparams);
-                this.getServletContext( ).getRequestDispatcher("/index.jsp").forward(request, response);
+                sc.getRequestDispatcher("/index.jsp").forward(request, response);
             } else {
                 areaCheckServlet.checkCoordFromForm(Stream.of(paramsR).collect(Collectors.toCollection(ArrayList::new)), paramX, paramY);
             }
@@ -58,7 +59,7 @@ public class ControllerServlet extends HttpServlet {
 
 
     public void init (ServletConfig config) throws ServletException {
-         sc = config.getServletContext( );
+        sc = config.getServletContext( );
     }
 
 }
