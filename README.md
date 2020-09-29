@@ -163,6 +163,39 @@ request         javax.servlet.ServletRequest
 response        javax.servlet.ServletResponse
 session         javax.servlet.http.HttpSession
 
+## 10. Bean-компоненты и их использование в JSP.
+JavaBeans — классы в языке Java, написанные по определённым правилам. Они используются для объединения нескольких объектов в один для удобной передачи данных.
+
+JavaBean – это одноуровневые объекты, использующиеся для того, чтобы инкапсулировать в одном объекте код, данные или и то и другое. Компонент JavaBean может иметь свойства, методы и события, открытые для удаленного доступа.
+
+```jsp
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+         "http://www.w3.org/TR/html4/loose.dtd">
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.*" %>
+
+<jsp:useBean id="hello" class="example.JavabeanHello" scope="page" />
+
+<%! 
+String getFormattedDate() 
+{ 
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss"); 
+    return sdf.format(new Date()); 
+} 
+%>
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>JavaBean с JSP!</title>
+  </head>
+  <body>
+       <h2>${hello.message}</h2>
+       <i>Сегодня <%= getFormattedDate() %></i>
+  </body>
+</html>
+```
+
 ## 11. Стандартные теги JSP. Использование Expression Language (EL) в JSP.
 
 ### Стандартные теги JSP.
