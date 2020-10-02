@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 
 public class ControllerServlet extends HttpServlet {
 
-    ServletContext sc;
 
     @Override
     protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,16 +25,15 @@ public class ControllerServlet extends HttpServlet {
         String paramX = request.getParameter("selectX");
         String paramY = request.getParameter("enterY");
         ArrayList<String> emptyparams = new ArrayList<>( );
-        AreaCheckServlet areaCheckServlet = new AreaCheckServlet(request, response, sc);
 
 
         if (paramY != null && paramY.contains("graphic")) {
             if (paramsR == null) {
                 emptyparams.add("R");
                 request.setAttribute("emptyparams", emptyparams);
-                sc.getRequestDispatcher("/index.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
             } else {
-                areaCheckServlet.checkCoordFromGraphic(Stream.of(paramsR).collect(Collectors.toCollection(ArrayList::new)), paramY);
+                sendToCheck(request, response);
             }
         } else {
             if (paramsR == null || paramX == null || paramY == null) {
@@ -50,16 +48,16 @@ public class ControllerServlet extends HttpServlet {
                 }
 
                 request.setAttribute("emptyparams", emptyparams);
-                sc.getRequestDispatcher("/index.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
             } else {
-                areaCheckServlet.checkCoordFromForm(Stream.of(paramsR).collect(Collectors.toCollection(ArrayList::new)), paramX, paramY);
+                sendToCheck(request, response);
             }
         }
     }
 
-
-    public void init (ServletConfig config) throws ServletException {
-        sc = config.getServletContext( );
+    public void sendToCheck (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        getServletContext().getRequestDispatcher("/checkArea").forward(request, response);
     }
+
 
 }

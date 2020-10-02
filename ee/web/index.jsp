@@ -1,5 +1,6 @@
 <%@ page import="java.util.stream.Stream" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="helpers.Point" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="ru">
 <head>
@@ -114,14 +115,14 @@
                   fill="blue" fill-opacity="0.7" stroke="blue"></path>
 
             <%
-                ArrayList<ArrayList<Number>> points;
+                ArrayList<Point> points;
                 if (request.getServletContext( ).getAttribute("points") != null) {
-                    points = (ArrayList<ArrayList<Number>>) request.getServletContext( ).getAttribute("points");
-                    for (ArrayList<Number> point : points) {
+                    points = (ArrayList<Point>) request.getServletContext( ).getAttribute("points");
+                    for (Point point : points) {
             %>
             <circle r="3"
-                    cx="<% out.println(150 + Double.parseDouble(point.get(0).toString())/Double.parseDouble(point.get(2).toString())*100); %>"
-                    cy="<% out.println(150 - Double.parseDouble(point.get(1).toString())/Double.parseDouble(point.get(2).toString())*100); %>"
+                    cx="<%=150 + point.getX()/point.getR()*100 %>"
+                    cy="<%=150 - point.getY()/point.getR()*100 %>"
                     id="target-dot"></circle>
             <%
                     }
@@ -147,9 +148,7 @@
         <h5><b><p id="negodiay"><%out.println(message);%></p></b></h5>
 
         <%
-            }
-
-            else {
+            } else {
                 if (request.getAttribute("in") != null && request.getAttribute("in").equals(true) && (request.getParameter("in") == null || !request.getParameter("in").equals("true"))) {
                     request.getServletContext( ).getRequestDispatcher("/result.jsp").forward(request, response);
                     request.setAttribute("in", false);

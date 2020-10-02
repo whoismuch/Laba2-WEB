@@ -1,7 +1,8 @@
 <%@ page import="com.AreaCheckServlet" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.Map" %><%--
+<%@ page import="java.util.Map" %>
+<%@ page import="helpers.FullResult" %><%--
   Created by IntelliJ IDEA.
   User: khumachbayramova
   Date: 27.09.2020
@@ -27,8 +28,8 @@
 <div class="centerBorderT">
 
     <div class="link">
-    <a href="/ee_war_exploded/index.jsp?in=true"><img src="/ee_war_exploded/strelka.jpg" width="80"
-                                                      height="50"></a>
+        <a href="/ee_war_exploded/index.jsp?in=true"><img src="/ee_war_exploded/strelka.jpg" width="80"
+                                                          height="50"></a>
     </div>
 
     <table>
@@ -40,26 +41,41 @@
             <th>Результат</th>
         </tr>
         <%
-            ArrayList<HashMap<String, Object>> datas;
+            ArrayList<FullResult> historyList;
             if (request.getServletContext( ).getAttribute("history") != null) {
-                datas = (ArrayList<HashMap<String, Object>>) request.getServletContext( ).getAttribute("history");
-                for (HashMap<String, Object> map : datas) {
+                historyList = (ArrayList<FullResult>) request.getServletContext( ).getAttribute("history");
+                for (FullResult fullResult : historyList) {
         %>
         <tr>
             <%
-                if (map.get("Result").equals("Данные неверны")) {
+                if (fullResult.getResult( ) == -1) {
             %>
             <td colspan="4" style="color: red;">Данные неверны</td>
             <%
             } else {
             %>
-            <td><% out.print(String.format("%.2f", Float.parseFloat(map.get("X").toString( ))));%></td>
-            <td><% out.print(String.format("%.2f", Float.parseFloat(map.get("Y").toString( ))));%></td>
-            <td><% out.print(map.get("R"));%></td>
-            <td><% out.print(map.get("Result"));%></td>
+            <td><%=String.format("%.2f", fullResult.getX( ).floatValue()) %>
+            </td>
+            <td><%=String.format("%.2f", fullResult.getY( ).floatValue()) %>
+            </td>
+            <td><%=fullResult.getR( )%></td>
             <%
+                switch (fullResult.getResult( )) {
+                    case (0):
+            %>
+            <td><%= "А ты хорош" %>
+            </td>
+            <%
+                    break;
+                case (1):
+            %>
+            <td><%= "Это фейл" %>
+            </td>
+            <%
+                    }
                 }
             %>
+
         </tr>
         <%
                 }
@@ -67,7 +83,6 @@
         %>
 
     </table>
-
 
 
 </div>

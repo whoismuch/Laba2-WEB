@@ -20,5 +20,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="JBoss 21.0.0.Final" level="application_server_libraries" />
+    <orderEntry type="library" name="jboss-servlet-api_4.0_spec-2.0.0.Final" level="project" />
   </component>
 </module>
