@@ -308,15 +308,15 @@ log () Записывает информацию в файл регистрац�
 метод _jspService ряд объектов, которые можно
 использовать в скриптлетах и выражениях:
 
-application     javax.servlet.ServletContext
-config          javax.servlet.ServletConfig
-exception       java.lang.Throwable.   (используется только на страницахперенаправлениях с информацией об ошибках (Error Pages).)
-out             javax.servlet.jsp.JspWriter
-page            java.lang.Object   (API для доступа к экземпляру класса сервлета, в который транслируется JSP.)
-PageContext     javax.servlet.jsp.PageContext (PageContext — контекст JSP-страницы)
-request         javax.servlet.ServletRequest
-response        javax.servlet.ServletResponse
-session         javax.servlet.http.HttpSession
+- application     javax.servlet.ServletContext
+- config          javax.servlet.ServletConfig
+- exception       java.lang.Throwable.   (используется только на страницахперенаправлениях с информацией об ошибках (Error Pages).)
+- out             javax.servlet.jsp.JspWriter
+- page            java.lang.Object   (API для доступа к экземпляру класса сервлета, в который транслируется JSP.)
+- PageContext     javax.servlet.jsp.PageContext (PageContext — контекст JSP-страницы)
+- request         javax.servlet.ServletRequest
+- response        javax.servlet.ServletResponse
+- session         javax.servlet.http.HttpSession
 
 ## 10. Bean-компоненты и их использование в JSP.
 JavaBeans — классы в языке Java, написанные по определённым правилам. Они используются для объединения нескольких объектов в один для удобной передачи данных.
