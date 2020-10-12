@@ -143,6 +143,22 @@ __мы должны использовать forward() при доступе к 
 Основой для формирования фильтров служит интерфейс javax.servlet.Filter, который реализует три метода:
 
 ```java
+<filter>
+    <filter-name>FilterName</filter-name>
+    <filter-class>common.FilterConnect</filter-class>
+    <init-param>
+        <param-name>active</param-name>
+        <param-value>true</param-true>
+    </init-param>
+</filter>
+ 
+<filter-mapping>
+    <filter-name>FilterName</filter-name>
+    <servlet-name>ServletName</servlet-name>
+</filter-mapping>
+```
+
+```java
 void init (FilterConfig config) throws ServletException;
 
 void destroy ();
