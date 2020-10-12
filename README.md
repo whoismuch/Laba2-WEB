@@ -28,7 +28,6 @@ I'm growing up and improving my skills at programming, but it still smells like 
 - Результат вычислений - факт попадания или непопадания точки в область.
 - Ссылку на страницу с веб-формой для формирования нового запроса.
 
-
 ## 1. Java-сервлеты. Особенности реализации, ключевые методы, преимущества и недостатки относительно CGI и FastCGI.
 
 __Servlet__ – в первую очередь это простой Java интерфейс, реализация которого расширяет функциональные возможности сервера. Сервлет взаимодействует с клиентами посредством принципа запрос-ответ. 
@@ -113,12 +112,26 @@ public void destroy()
 
 - Сервлеты могут делегировать обработку запросов другим ресурсам (сервлетам, JSP и HTML-страницам).
 - Диспетчеризация осуществляется с помощью реализаций интерфейса javax.servlet.RequestDispatcher.
-- Два способа получения RequestDispatcher — через ServletRequest (абсолютный или относительный URL) и ServletContext (только абсолютный URL).
-- Два способа делегирования обработки запроса — forward и include (include используется чтобы вставить вывод другого сервлета в текущий. forward позволяет провести предварительную обработку запроса и потом полностью передать управление другому сервлету)
+- Два способа получения RequestDispatcher — через ServletRequest (абсолютный или относительный URL) (RequestDispatcher view = request.getRequestDispatcher(“result.jsp”);) и ServletContext (только абсолютный URL). (RequestDispatcher reqDispObj = getServletContext().getRequestDispatcher("/ContextRoot/home.jsp");)
+- Два способа делегирования обработки запроса — forward и include (include используется чтобы вставить вывод другого сервлета в текущий. forward позволяет провести предварительную обработку запроса и потом полностью передать управление другому сервлету) 
+
+__Отличие include от forward:__
+
+- Assume you have two pages, pageA, and pageB. In pageA you wrote the include tag. In this case the control was in pageA til you called the include tag. At this point the full control goes to pageB. When It's done, control is returned to pageA starting from the next point of coding after the include tag and continuing to the rest of pageA.
+
+- Well, to get things much clearer, let's say that we have the same pages, pageA and pageB, but this time we will use the forward tag in pageA, not the include tag. Again, the control will begin in pageA till we call the forward tag in pageA, at this point, control is transfered to pageB, just like the include tag. But the difference is what happens when pageB completes. In case of the forward tag, control doesn't go back to pageA again.
+
+Отличие redirect от forward:
+- response.sendRedirect(""); используется для перенаправления ресурсов на разные серверы или домены. Эта передача задачи управления делегируется браузеру контейнером. То есть, перенаправление отправляет заголовок обратно в браузер/клиент. Этот заголовок содержит URL-адрес ресурса, который будет перенаправлен браузером. Затем браузер инициирует новый запрос к указанному URL-адресу.
+
+- request.getRequestDispathcer("login.jsp").forward(request, response); используется для пересылки ресурсов, доступных на сервере, с которых выполняется вызов. Эта передача управления осуществляется контейнером внутри, а браузер/клиент не задействован.
+
+__мы должны использовать forward() при доступе к ресурсам в том же приложении, потому что это быстрее, чем метод sendRedirect(), который требовал дополнительного сетевого вызова.__
+
+#### Фильтры сервлетов
 
 Сервлетный фильтр занимается предварительной обработкой запроса, прежде чем тот попадает в сервлет, и/или последующей обработкой ответа, исходящего из сервлета.
 
-#### Фильтры сервлетов
 
 Сервлетные фильтры могут:
 
@@ -134,8 +147,19 @@ void init (FilterConfig config) throws ServletException;
 
 void destroy ();
 
-void doFilter (ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException;
+void doFilter (ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException; 
 ```
+__Пример предобработки:__
+```java
+if (userAuthorized()) {
+    chain.doFilter(request, response);  
+} else { 
+    httpResponse.sendRedirect("login.jsp");
+}
+```
+__Пример постобработки__
+Чтобы манипулировать ответами от сервера, прежде чем они будут отправлены обратно клиенту.
+
 
 ## 5. Контекст сервлета - назначение, способы взаимодействия сервлетов с контекстом.
 
